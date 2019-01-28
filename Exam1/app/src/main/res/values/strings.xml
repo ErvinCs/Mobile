@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Exam1</string>
+    <string name="action_settings">Settings</string>
+    <string name="action_post">Post</string>
+    <string name="action_filter">My Products</string>
+    <string name="action_all">All Products</string>
+    
+    <string-array name="status_array">
+        <item>new</item>
+        <item>sold</item>
+        <item>popular</item>
+        <item>old</item>
+        <item>discounted</item>
+    </string-array>
+</resources>
