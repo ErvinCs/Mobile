@@ -1,7 +1,0 @@
-<resources>
-    <dimen name="fab_margin">16dp</dimen>
-    <dimen name="field_description">16dp</dimen>
-    <dimen name="post_title">18dp</dimen>
-    <dimen name="post_description">14dp</dimen>
-    <dimen name="post_creator">8dp</dimen>
-</resources>
