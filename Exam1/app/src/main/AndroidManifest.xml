@@ -5,6 +5,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
+            android:usesCleartextTraffic="true"
             android:name=".volley.BackendVolley"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
@@ -22,19 +23,19 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".DetailsProductActivity"
+        <activity android:name=".DetailsFulfillActivity"
                   android:label="Details Product">
         </activity>
         <activity android:name=".PostProductActivity"
                   android:label="Add Product">
         </activity>
-        <activity android:name=".ClerkActivity"
+        <activity android:name=".EmployeeActivity"
                   android:label="Clerk">
         </activity>
-        <activity android:name=".ClientActivity"
+        <activity android:name=".SupplierActivity"
                   android:label="Client">
         </activity>
-        <activity android:name=".DetailsClerkActivity"
+        <activity android:name=".DetailsEmployee"
                   android:label="Details Clerk">
         </activity>
     </application>

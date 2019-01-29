@@ -23,59 +23,60 @@ const getRandomInt = (min, max) => {
     return Math.floor(Math.random() * (max - min)) + min;
 };
 
-const productNames = ['Book', 'Phone', 'Tablet', 'Laptop', 'Computer'];
-const productDescription = ['Very good!', 'Slightly used', 'Top condition', 'Somehow new!'];
-const statusTypes = ['new', 'sold', 'popular', 'old', 'discounted'];
-const products = [];
+const requestNames = ['Store1', 'Blue', 'Market13', 'Red', 'Billa'];
+const productNames = ['Fish', 'Bread', 'Cereal', 'Milk', 'Soap', 'Pen'];
+const statusTypes = ['open', 'closed', 'new'];
+const requests = [];
 for (let i = 0; i < 10; i++) {
-    products.push({
+    requests.push({
         id: i + 1,
-        name: productNames[getRandomInt(0, productNames.length)],
-        description: productDescription[getRandomInt(0, productDescription.length)],
-        quantity: getRandomInt(1, 100),
-        price: getRandomInt(1, 10000),
-        status: statusTypes[getRandomInt(0, statusTypes.length)]
+        name: requestNames[getRandomInt(0, requestNames.length)],
+        product: productNames[getRandomInt(0, productNames.length)],
+        status: statusTypes[getRandomInt(0, statusTypes.length)],
+        quantity: getRandomInt(1, 100)
     });
 }
 
 const router = new Router();
-router.get('/products', ctx => {
-    ctx.response.body = products.filter(product => product.status !== statusTypes[1]);
+router.get('/requests', ctx => {
+    ctx.response.body = requests.filter(request => request.status === statusTypes[0]);
     ctx.response.status = 200;
 });
 
-router.get('/all', ctx => {
-    ctx.response.body = products;
+router.get('/closed', ctx => {
+    ctx.response.body = requests.filter(request => request.status === statusTypes[1]);
     ctx.response.status = 200;
 });
 
-router.post('/buyProduct', ctx => {
+router.get('/big', ctx => {
+    ctx.response.body = requests.filter(request => request.status === statusTypes[0] && request.quantity > 5);
+    ctx.response.status = 200;
+});
+
+router.post('/fill', ctx => {
     // console.log("ctx: " + JSON.stringify(ctx));
     const headers = ctx.request.body;
     // console.log("body: " + JSON.stringify(headers));
     const id = headers.id;
-    const quantity = headers.quantity;
-    if (typeof id !== 'undefined' && typeof quantity !== 'undefined') {
-        const index = products.findIndex(product => product.id == id && product.quantity >= quantity);
+    if (typeof id !== 'undefined') {
+        const index = requests.findIndex(request => request.id == id);
         if (index === -1) {
-            console.log("Product not available!");
-            ctx.response.body = {text: 'Product not available!'};
+            console.log("Request not available!");
+            ctx.response.body = {text: 'Request not available!'};
             ctx.response.status = 404;
         } else {
-            let product = products[index];
-            product.quantity -= 1;
-            if (product.quantity === 0) {
-                product.status = statusTypes[1]
-            }
-            ctx.response.body = product;
+            let request = requests[index];
+            request.status = statusTypes[1];
+            ctx.response.body = request;
             ctx.response.status = 200;
         }
     } else {
-        console.log("Missing or invalid: id or quantity!");
-        ctx.response.body = {text: 'Missing or invalid: id or quantity!'};
+        console.log("Missing or invalid: id!");
+        ctx.response.body = {text: 'Missing or invalid: id!'};
         ctx.response.status = 404;
     }
 });
+
 
 const broadcast = (data) =>
     wss.clients.forEach((client) => {
@@ -84,61 +85,57 @@ const broadcast = (data) =>
         }
     });
 
-router.post('/product', ctx => {
+router.post('/request', ctx => {
     // console.log("ctx: " + JSON.stringify(ctx));
     const headers = ctx.request.body;
     // console.log("body: " + JSON.stringify(headers));
     const name = headers.name;
-    const description = headers.description;
+    const product = headers.product;
     const quantity = headers.quantity;
-    const price = headers.price;
-    if (typeof name !== 'undefined' && typeof description !== 'undefined' && typeof quantity !== 'undefined'
-        && typeof price !== 'undefined') {
-        const index = products.findIndex(product => product.name == name &&
-            product.description == description);
+    if (typeof name !== 'undefined' && typeof product !== 'undefined' && typeof quantity !== 'undefined') {
+        const index = requests.findIndex(request => request.name == name);
         if (index !== -1) {
-            console.log("Product already exists!");
-            ctx.response.body = {text: 'Product already exists!'};
+            console.log("Request already exists!");
+            ctx.response.body = {text: 'Request already exists!'};
             ctx.response.status = 404;
         } else {
-            let maxId = Math.max.apply(Math, products.map(function (product) {
-                return product.id;
+            let maxId = Math.max.apply(Math, requests.map(function (request) {
+                return request.id;
             })) + 1;
-            let product = {
+            let request = {
                 id: maxId,
                 name,
-                description,
+                product,
                 quantity,
-                price,
                 status: statusTypes[0]
             };
-            products.push(product);
-            broadcast(product);
-            ctx.response.body = product;
+            requests.push(request);
+            broadcast(request);
+            ctx.response.body = request;
             ctx.response.status = 200;
         }
     } else {
-        console.log("Missing or invalid: name, description, quantity or price!");
-        ctx.response.body = {text: 'Missing or invalid: name, description, quantity or price!"'};
+        console.log("Missing or invalid: name, product or quantity!");
+        ctx.response.body = {text: 'Missing or invalid: name, product or quantity!'};
         ctx.response.status = 404;
     }
 });
 
-router.del('/product/:id', ctx => {
-    console.log("ctx: " + JSON.stringify(ctx));
+router.del('/request/:id', ctx => {
+    // console.log("ctx: " + JSON.stringify(ctx));
     const headers = ctx.params;
-    console.log("body: " + JSON.stringify(headers));
+    // console.log("body: " + JSON.stringify(headers));
     const id = headers.id;
     if (typeof id !== 'undefined') {
-        const index = products.findIndex(product => product.id == id);
+        const index = requests.findIndex(request => request.id == id);
         if (index === -1) {
-            console.log("No product with id: " + id);
-            ctx.response.body = {text: 'Invalid product id'};
+            console.log("No request with id: " + id);
+            ctx.response.body = {text: 'Invalid request id'};
             ctx.response.status = 404;
         } else {
-            let product = products[index];
-            products.splice(index, 1);
-            ctx.response.body = product;
+            let place = requests[index];
+            requests.splice(index, 1);
+            ctx.response.body = place;
             ctx.response.status = 200;
         }
     } else {
@@ -150,4 +147,4 @@ router.del('/product/:id', ctx => {
 app.use(router.routes());
 app.use(router.allowedMethods());
 
-server.listen(2024);
+server.listen(2229);

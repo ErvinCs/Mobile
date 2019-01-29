@@ -7,20 +7,19 @@ import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import com.lab021.csoka.exam1.model.Codes
-import com.lab021.csoka.exam1.model.Product
+import com.lab021.csoka.exam1.model.Request
 
-class DetailsClerkActivity : AppCompatActivity() {
+class DetailsEmployee : AppCompatActivity() {
 
-    private val TAG : String = "DetailsClerkActivity: "
+    private val TAG : String = "DetailsEmployee: "
 
     lateinit var etName : EditText
-    lateinit var etDescription : EditText
+    lateinit var etProduct : EditText
     lateinit var etQuantity : EditText
-    lateinit var etPrice : EditText
+    lateinit var etStatus : EditText
 
-    lateinit var productRef : Product
+    lateinit var productRef : Request
 
     lateinit var deleteButton: Button
 
@@ -28,7 +27,7 @@ class DetailsClerkActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_clerk_details)
 
-        productRef = intent.extras.getParcelable<Product>(Codes.intent_msg_product_open)
+        productRef = intent.extras.getParcelable<Request>(Codes.intent_msg_product_open)
 
         deleteButton = findViewById(R.id.buttonDelete)
         deleteButton.setOnClickListener { deleteActivity() }
@@ -36,20 +35,18 @@ class DetailsClerkActivity : AppCompatActivity() {
         etName = findViewById(R.id.etName)
         etName.setText(productRef.name)
 
-        etDescription = findViewById(R.id.etDescription)
-        etDescription.setText(productRef.description)
+        etProduct = findViewById(R.id.etProduct)
+        etProduct.setText(productRef.product)
 
         etQuantity = findViewById(R.id.etQuantity)
         etQuantity.setText(productRef.quantity.toString())
 
-        etPrice = findViewById(R.id.etPrice)
-        etPrice.setText(productRef.price.toString())
     }
 
     private fun deleteActivity() {
         deleteButton = findViewById(R.id.buttonDelete)
         val replyIntent : Intent = Intent()
-        Log.d(TAG, "Deleting Product")
+        Log.d(TAG, "Deleting Request")
         replyIntent.putExtra(Codes.intent_msg_product_delete, productRef)
         setResult(Activity.RESULT_OK, replyIntent)
         finish()

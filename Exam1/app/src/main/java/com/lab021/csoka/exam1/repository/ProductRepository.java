@@ -3,81 +3,80 @@ package com.lab021.csoka.exam1.repository;
 import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
-import com.lab021.csoka.exam1.dao.ProductDao;
-import com.lab021.csoka.exam1.model.Product;
-import okhttp3.MediaType;
+import com.lab021.csoka.exam1.dao.RequestDao;
+import com.lab021.csoka.exam1.model.Request;
 
 import java.util.List;
 
 public class ProductRepository {
-    private ProductDao mProductDao;
-    private LiveData<List<Product>> mAllProducts;
+    private RequestDao mRequestDao;
+    private LiveData<List<Request>> mAllRequests;
 
     public ProductRepository(Application application) {
         ProductRoomDatabase db = ProductRoomDatabase.getDatabase(application);
-        mProductDao = db.productDao();
-        mAllProducts = mProductDao.getAllProducts();
+        mRequestDao = db.productDao();
+        mAllRequests = mRequestDao.getAllRequests();
     }
 
-    public LiveData<List<Product>> getmAllProducts() {
-        return mAllProducts;
+    public LiveData<List<Request>> getmAllRequests() {
+        return mAllRequests;
     }
 
-    public void insert(Product product) {
-        new insertAsyncTask(mProductDao).execute(product);
+    public void insert(Request request) {
+        new insertAsyncTask(mRequestDao).execute(request);
     }
 
-    public void deleteOne(Product product) {
-        new removeAsyncTask(mProductDao).execute(product);
+    public void deleteOne(Request request) {
+        new removeAsyncTask(mRequestDao).execute(request);
     }
 
-    public void updateOne(Product newProduct) {
-        new updateAsyncTask(mProductDao).execute(newProduct);
+    public void updateOne(Request newRequest) {
+        new updateAsyncTask(mRequestDao).execute(newRequest);
     }
 
-    public List<Product> getProductList() {
-        return getmAllProducts().getValue();
+    public List<Request> getProductList() {
+        return getmAllRequests().getValue();
     }
 
-    private static class insertAsyncTask extends AsyncTask<Product, Void, Void> {
+    private static class insertAsyncTask extends AsyncTask<Request, Void, Void> {
 
-        private ProductDao mAsyncTaskDao;
+        private RequestDao mAsyncTaskDao;
 
-        insertAsyncTask(ProductDao dao) {
+        insertAsyncTask(RequestDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
-        protected Void doInBackground(Product... params) {
+        protected Void doInBackground(Request... params) {
             mAsyncTaskDao.insertOne(params[0]);
             return null;
         }
     }
 
-    private static class removeAsyncTask extends AsyncTask<Product, Void, Void> {
-        private ProductDao mAsyncTaskDao;
+    private static class removeAsyncTask extends AsyncTask<Request, Void, Void> {
+        private RequestDao mAsyncTaskDao;
 
-        removeAsyncTask(ProductDao dao) {
+        removeAsyncTask(RequestDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
-        protected Void doInBackground(Product... params) {
+        protected Void doInBackground(Request... params) {
             mAsyncTaskDao.deleteOne(params[0]);
             return null;
         }
     }
 
-    private static class updateAsyncTask extends AsyncTask<Product, Void, Void> {
+    private static class updateAsyncTask extends AsyncTask<Request, Void, Void> {
 
-        private ProductDao mAsyncTaskDao;
+        private RequestDao mAsyncTaskDao;
 
-        updateAsyncTask(ProductDao dao) {
+        updateAsyncTask(RequestDao dao) {
             mAsyncTaskDao = dao;
         }
 
         @Override
-        protected Void doInBackground(Product... params) {
+        protected Void doInBackground(Request... params) {
             mAsyncTaskDao.updateOne(params[0]);
             return null;
         }

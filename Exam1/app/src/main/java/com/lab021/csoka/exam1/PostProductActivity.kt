@@ -8,16 +8,16 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import com.lab021.csoka.exam1.model.Codes
-import com.lab021.csoka.exam1.model.Product
+import com.lab021.csoka.exam1.model.Request
 import com.lab021.csoka.exam1.model.Status
 
 class PostProductActivity : AppCompatActivity() {
     private val TAG : String = "PostProductActivity: "
 
     lateinit var editName : EditText
-    lateinit var editDescription : EditText
+    lateinit var editProduct : EditText
     lateinit var editQuantity : EditText
-    lateinit var editPrice : EditText
+
     lateinit var buttonPostProduct : Button
 
 
@@ -30,23 +30,23 @@ class PostProductActivity : AppCompatActivity() {
 
     private fun postProduct() {
         editName = findViewById(R.id.editName)
-        editDescription = findViewById(R.id.editDescription)
+        editProduct = findViewById(R.id.editProduct)
         editQuantity = findViewById(R.id.editQuantity)
-        editPrice = findViewById(R.id.editPrice)
+
 
         val replyIntent : Intent = Intent()
-        if (editName.text.isEmpty() || editDescription.text.isEmpty() ||
-            editQuantity.text.isEmpty() || editPrice.text.isEmpty()) {
+        if (editName.text.isEmpty() || editProduct.text.isEmpty() ||
+            editQuantity.text.isEmpty()) {
             Log.d(TAG, "Result Canceled")
             setResult(Activity.RESULT_CANCELED, replyIntent)
         } else {
-            val post = Product(
+            val post = Request(
                 editName.text.toString(),
-                editDescription.text.toString(), editQuantity.text.toString().toInt(),
-                editPrice.text.toString().toInt(), Status.NEW.toString()
+                editProduct.text.toString(), editQuantity.text.toString().toInt(),
+                Status.OPEN.toString()
             )
             post.id = 0
-            Log.d(TAG, "Posting Product")
+            Log.d(TAG, "Posting Request")
             replyIntent.putExtra(Codes.intent_msg_product_post, post)
             setResult(Activity.RESULT_OK, replyIntent)
         }
