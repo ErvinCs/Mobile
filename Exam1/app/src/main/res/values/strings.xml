@@ -4,6 +4,7 @@
     <string name="action_post">Post</string>
     <string name="action_filter">My Products</string>
     <string name="action_all">All Products</string>
+    <string name="action_big">Big</string>
     
     <string-array name="status_array">
         <item>new</item>

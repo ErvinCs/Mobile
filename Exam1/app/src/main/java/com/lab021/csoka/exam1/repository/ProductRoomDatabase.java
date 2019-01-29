@@ -7,7 +7,7 @@ import android.content.Context;
 import com.lab021.csoka.exam1.dao.RequestDao;
 import com.lab021.csoka.exam1.model.Request;
 
-@Database(entities = {Request.class}, version = 3, exportSchema = false)
+@Database(entities = {Request.class}, version = 4, exportSchema = false)
 public abstract class ProductRoomDatabase extends RoomDatabase {
     public abstract RequestDao productDao();
 

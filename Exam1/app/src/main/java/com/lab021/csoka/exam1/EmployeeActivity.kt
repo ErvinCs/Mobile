@@ -56,6 +56,7 @@ class EmployeeActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        //viewModel.productList.clear()
 
         viewModel.allProducts.observe(this, object : Observer<List<Request>> {
             override fun onChanged(t: List<Request>?) {

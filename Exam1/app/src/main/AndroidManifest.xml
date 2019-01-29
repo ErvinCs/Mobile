@@ -38,6 +38,9 @@
         <activity android:name=".DetailsEmployee"
                   android:label="Details Clerk">
         </activity>
+        <activity android:name=".FilterBigActivity"
+                  android:label="Big">
+        </activity>
     </application>
 
 </manifest>

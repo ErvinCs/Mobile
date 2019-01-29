@@ -17,7 +17,6 @@ import com.lab021.csoka.exam1.model.Request;
 import java.util.Collections;
 import java.util.List;
 
-//Supplier
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
@@ -54,7 +53,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         final Request current = mRequests.get(i);
         holder.textName.setText("Name: " + current.getName());
         holder.textQuantity.setText("Quantity: " + current.getQuantity().toString());
-        holder.textProduct.setText("Price: " + current.getProduct());
+        holder.textProduct.setText("Product: " + current.getProduct());
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){

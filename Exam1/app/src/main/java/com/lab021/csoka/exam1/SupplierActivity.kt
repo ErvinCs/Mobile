@@ -57,6 +57,8 @@ class SupplierActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         viewModel = ViewModelProviders.of(this).get(ProductViewModel::class.java)
+        //viewModel.productList.clear()
+
         viewModel.allProducts.observe(this, object : Observer<List<Request>> {
             override fun onChanged(t: List<Request>?) {
                 adapter.setProducts(t)
@@ -74,7 +76,10 @@ class SupplierActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item!!.itemId) {
             R.id.action_filter -> {
-                //View bought products
+                Toast.makeText(this, "Filtering", Toast.LENGTH_SHORT).show()
+                Log.d(TAG, "Starting Filter")
+                val intent = Intent(this, FilterBigActivity::class.java)
+                startActivity(intent)
                 true
             } R.id.action_all -> {
                 //View the list of all products
